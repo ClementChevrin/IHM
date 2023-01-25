@@ -13,8 +13,8 @@ Devoir UX map S7
 | A faire | Etat     |
 | :-------- | :------- |
 | `Placer un point` | :heavy_check_mark: |
-| `Placer plusieurs points` | `:x:` |
-| `Faire un tracé entre des points` | `:x:` |
-| `Obtenir les variations d'altitude` | `:x:` |
-| `Tout mettre en place` | `:x:` |
-| `Implementer du css` | `:x:` |
+| `Placer plusieurs points` | :x: |
+| `Faire un tracé entre des points` | :x: |
+| `Obtenir les variations d'altitude` | :x: |
+| `Tout mettre en place` | :x: |
+| `Implementer du css` | :x: |
