@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <title>Maps</title>
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+      <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+      <link rel="stylesheet" href="css/style.css">
+      <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.css" />
+
+      <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+      <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+      <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+      <script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=S8d7L47mdyAG5nHG09dUnSPJjreUVPeC"></script>
+      <script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-routing.js?key=S8d7L47mdyAG5nHG09dUnSPJjreUVPeC"></script>
+      <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>     
+      <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+      <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+      <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+
+
+
+
+
+<script type="text/javascript" src="js/script.js"></script>
+</head>
+<body>
+      <div id="map" style="height: 800px;width: 800px;"></div>
+      <div class="formBlock">
+            <form>
+                  <input type="text" name="Depart" id="start" placeholder="Départ">
+                  <input type="text" name="Arrivee" id="end" placeholder="Arrivée">
+                  <button type="submit">Recherche</button>
+            </form>
+            <form>
+                  <table>
+                  <tr>
+                        <td>
+                              <label for="lat1">Latitude du point 1:</label>
+                              <input type="text" id="lat1" name="lat1" size="20px">
+                        </td>
+                        <td>
+                              <label for="lat2">Latitude du point 2:</label>
+                              <input type="text" id="lat2" name="lat2" size="20px">
+                        </td>
+                  </tr>
+                  
+                  <tr>
+                        <td>
+                              <label for="lng1">Longitude du point 1:</label>
+                              <input type="text" id="lng1" name="lng1" size="20px">
+                        </td>
+                        <td>
+                              <label for="lng2">Longitude du point 2:</label>
+                              <input type="text" id="lng2" name="lng2" size="20px">
+                        </td>
+                  </tr>
+                  
+                  <tr>
+                        <button type="button" id="Envoyer">Envoyer</button>
+                  </tr>
+                  </table>
+              </form>
+      </div>
+      <canvas id="altitudeChart" style="height: 800px;width: 800px;"></canvas>
+
+</body>
+</html>
