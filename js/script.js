@@ -8,58 +8,58 @@ window.onload = () => {
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
       }).addTo(map)
 
-      map.on("click",mapClickListen)
-
-/*
-      var A = L.latLng(49.894067, 2.295753);
-      var B = L.latLng(49.771884, 2.488428);
-      var C = L.latLng(49.671884, 2.688428);
-      // Ajouter un itinéraire entre les deux marqueurs
-      var control = L.Routing.control({
-            waypoints: [
-                  A,B,C
-            ],
-            routeWhileDragging: true,
-            geocoder: L.Control.Geocoder.nominatim(),
-            // option pour récupérer les informations de variation d'altitude
-            altLine: true
-      }).addTo(map);
+      map.on("click", mapClickListen)
+      document.querySelector('#start').addEventListener('blur', getCity)
+      /*
+            var A = L.latLng(49.894067, 2.295753);
+            var B = L.latLng(49.771884, 2.488428);
+            var C = L.latLng(49.671884, 2.688428);
+            // Ajouter un itinéraire entre les deux marqueurs
+            var control = L.Routing.control({
+                  waypoints: [
+                        A,B,C
+                  ],
+                  routeWhileDragging: true,
+                  geocoder: L.Control.Geocoder.nominatim(),
+                  // option pour récupérer les informations de variation d'altitude
+                  altLine: true
+            }).addTo(map);
+            
+            // Récupérer les données de variation d'altitude
+            control.on('routeselected', function(e) {
+                  var route = e.route;
+                  var altitudes = route.altitudes;
       
-      // Récupérer les données de variation d'altitude
-      control.on('routeselected', function(e) {
-            var route = e.route;
-            var altitudes = route.altitudes;
-
-            // Initialiser un tableau pour les données de chart.js
-            var chartData = {
-                  labels: [],
-                  datasets: [{
-                        label: "Altitude (m)",
-                        data: altitudes,
-                        backgroundColor: "rgba(255, 99, 132, 0.2)",
-                        borderColor: "rgba(255, 99, 132, 1)",
-                        borderWidth: 2
-                  }]
-            };
-
-      // Initialiser un canvas pour le graphique
-            var ctx = document.getElementById("altitudeChart").getContext("2d");
-
-            // Créer le graphique en utilisant Chart.js
-            var altitudeChart = new Chart(ctx, {
-                  type: "line",
-                  data: chartData,
-                  options: {
-                        scales: {
-                        y: {
-                              beginAtZero: true
+                  // Initialiser un tableau pour les données de chart.js
+                  var chartData = {
+                        labels: [],
+                        datasets: [{
+                              label: "Altitude (m)",
+                              data: altitudes,
+                              backgroundColor: "rgba(255, 99, 132, 0.2)",
+                              borderColor: "rgba(255, 99, 132, 1)",
+                              borderWidth: 2
+                        }]
+                  };
+      
+            // Initialiser un canvas pour le graphique
+                  var ctx = document.getElementById("altitudeChart").getContext("2d");
+      
+                  // Créer le graphique en utilisant Chart.js
+                  var altitudeChart = new Chart(ctx, {
+                        type: "line",
+                        data: chartData,
+                        options: {
+                              scales: {
+                              y: {
+                                    beginAtZero: true
+                              }
+                              }
                         }
-                        }
-                  }
+                  });
             });
-      });
-      var routingContainer = document.querySelector(".leaflet-routing-container");
-      routingContainer.parentNode.removeChild(routingContainer);*/
+            var routingContainer = document.querySelector(".leaflet-routing-container");
+            routingContainer.parentNode.removeChild(routingContainer);*/
 };
 
 function mapClickListen(e) {
@@ -73,13 +73,38 @@ function addMarker(pos) {
       if (marqueur != undefined) {
             map.removeLayer(marqueur)
       }
-      marqueur = L.marker(pos,{
-            draggable:true
+      marqueur = L.marker(pos, {
+            draggable: true
       })
-      marqueur.on("dragend",function (e)  {
+      marqueur.on("dragend", function (e) {
             pos = e.target.getLatLng()
             document.querySelector("#lat1").value = pos.lat
             document.querySelector("#lng1").value = pos.lng
       })
       marqueur.addTo(map)
+}
+
+function getCity() {
+      // ajax
+      const xmlhttp = new XMLHttpRequest
+      var address = document.querySelector('#start').value
+      xmlhttp.onreadystatechange = () => {
+            if (xmlhttp.readyState == 4) {
+                  if (xmlhttp.status == 200) {
+                        let response = JSON.parse(xmlhttp.response)
+                        console.log(response)
+
+                        let lat = response[0]["lat"]
+                        let lon = response[0]["lon"]
+                        document.querySelector("#lat1").value = lat
+                        document.querySelector("#lng1").value = lon
+
+                        let pos = [lat, lon]
+                        addMarker(pos)
+                        map.setView(pos, 11)
+                  }
+            }
+      }
+      xmlhttp.open("get", 'https://nominatim.openstreetmap.org/search?q=${adresse}&format=json&adressedetails=1&polygon_svg=1')
+      xmlhttp.send()
 }
