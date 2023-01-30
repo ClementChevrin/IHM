@@ -1,5 +1,6 @@
 var map, marqueur = null, marqueur2 = null, pos1 = null, pos2 = null
 var lat1, lat2, lng1, lng2
+
 window.onload = () => {
       // Initialiser la carte à une certaine position est un certain zoom
       map = L.map('map').setView([49.894067, 2.295753], 12)
@@ -109,13 +110,19 @@ function addMarker(pos) {
             })
             marqueur2.addTo(map)
             L.marker(pos).addTo(map)
-            L.Routing.control({
+
+            var control = L.Routing.control({
                   waypoints: [
-                        L.latLng(57.74, 11.94),
-                        L.latLng(57.6792, 11.949)
-                  ]
-            }).addTo(map)
+                        L.latLng(marqueur.getLatLng()),
+                        L.latLng(marqueur2.getLatLng())
+                  ],
+                  routeWhileDragging: true,
+                  show: false,
+                  addWaypoints: false,
+                  geocoder: L.Control.Geocoder.nominatim()
+            }).addTo(map);
       }
+
 }
 
 function getCity() {
