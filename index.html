@@ -40,46 +40,26 @@
                   <div class="formBlock">
                         <div>
                               <div style="padding: 5px;background-color: #C8FFC8;">
+                                    <label for="titre1">Adresse</label>
                                     <input type="text" name="first" id="firstAdresse" placeholder="Départ">
                                     <label for="lat1">Latitude</label>
                                     <input type="text" id="lat1" name="lat1" size="20px">
                                     <label for="lng1">Longitude</label>
-                                    <input type="text" id="lng1" name="lng1" size="20px">
+                                    <input type="text" id="lng1" name="lng1" size="20px"> <br>
+                                    <button id="removefirst">X</button>
                               </div>
                               <div style="padding: 5px;background-color: #FFC8C8;">
+                                    <label for="titre2">Adresse</label>
                                     <input type="text" name="second" id="secondAdresse" placeholder="Arrivée">
                                     <label for="lat2">Latitude</label>
                                     <input type="text" id="lat2" name="lat2" size="20px">
                                     <label for="lng2">Longitude</label>
                                     <input type="text" id="lng2" name="lng2" size="20px">
+                                    <button id="removesecond">X</button>
                               </div>
                         </div>
-                        <form>
-                              <input type="text" name="Depart" id="start" placeholder="Départ">
-                              <input type="text" name="Arrivee" id="end" placeholder="Arrivée">
-                              <button type="submit">Recherche</button>
-                        </form>
-                        <form>
-                              <table>
-                                    <tr>
-                                          <td>
-                                          </td>
-                                          <td>
-                                          </td>
-                                    </tr>
-
-                                    <tr>
-                                          <td>
-                                          </td>
-                                          <td>
-                                          </td>
-                                    </tr>
-
-                                    <tr>
-                                          <button type="button" id="Envoyer">Envoyer</button>
-                                    </tr>
-                              </table>
-                        </form>
+                        <input type="text" name="Depart" id="start" placeholder="Départ">
+                        <input type="text" name="Arrivee" id="end" placeholder="Arrivée">
                         <canvas id="altitudeChart" style="height: 800px;width: 800px;"></canvas>
                   </div>
             </div>
