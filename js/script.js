@@ -11,6 +11,9 @@ let adresse1, adresse2
 // Bouton de suppression
 let remove1, remove2
 
+// Trajet
+let control = null
+
 window.onload = () => {
       // Coordonnées point 1
       lat1 = document.querySelector("#lat1");
@@ -129,16 +132,23 @@ function removeMarker(index) {
 
 function addMarker(pos) {
       if (marqueur1 == null) {
+
+
             marqueur1 = L.marker(pos, {
                   draggable: true
             })
+            // Quand le marqueur est bougé
             marqueur1.on("dragend", function (e) {
                   pos = e.target.getLatLng()
                   lat1.value = pos.lat
                   lng1.value = pos.lng
+                  setRoute()
             })
-            marqueur1.addTo(map)
-            L.marker(pos).addTo(map)
+            // Ajout du marqueur
+            //marqueur1.addTo(map)
+
+
+
       }
       else {
             if (marqueur2 != null) {
@@ -151,11 +161,21 @@ function addMarker(pos) {
                   pos = e.target.getLatLng()
                   lat2.value = pos.lat
                   lng2.value = pos.lng
+                  setRoute()
             })
-            marqueur2.addTo(map)
-            L.marker(pos).addTo(map)
+            //marqueur2.addTo(map)
 
-            var control = L.Routing.control({
+            setRoute()
+      }
+
+}
+
+
+function setRoute() {
+      console.log(control)
+      if (control == null) {
+
+            control = L.Routing.control({
                   waypoints: [
                         L.latLng(marqueur1.getLatLng()),
                         L.latLng(marqueur2.getLatLng())
@@ -164,10 +184,15 @@ function addMarker(pos) {
                   show: false,
                   addWaypoints: false,
                   geocoder: L.Control.Geocoder.nominatim()
-            }).addTo(map);
+            })
+            console.log(control)
       }
-
+      else {
+            console.log("oui")
+      }
+      control.addTo(map);
 }
+
 
 function getCity() {
       // ajax
