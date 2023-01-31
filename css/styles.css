@@ -14,6 +14,10 @@ body {
     margin: 0;
 }
 
+h1 {
+    margin: 6px
+}
+
 .leaflet-right .leaflet-control {
     float: left !important;
 }
@@ -22,11 +26,16 @@ body {
     float: right !important;
 }
 
+.leaflet-routing-geocoders .leaflet-routing-geocoder input:focus-visible,
+.leaflet-routing-geocoders .leaflet-routing-geocoder input:focus,
+.leaflet-routing-geocoders .leaflet-routing-geocoder input:active,
+.leaflet-routing-geocoders .leaflet-routing-geocoder input:hover,
 .leaflet-routing-geocoders .leaflet-routing-geocoder input {
     width: -webkit-fill-available;
     padding: 6px 11px;
-    border: solid 1px black;
-    border-radius: 8px;
+    border: none;
+    border-radius: 6px;
+    background-color: rgb(228, 228, 228);
 }
 
 div.leaflet-control-container div.card-info {
@@ -58,4 +67,28 @@ div.leaflet-control-container div.zoom {
 
 div.leaflet-control-container div.zoom .leaflet-control-zoom {
     margin-bottom: 20px;
+}
+
+div.leaflet-routing-geocoder .leaflet-routing-remove-waypoint:after {
+    position: absolute;
+    display: block;
+    width: 15px;
+    height: 1px;
+    z-index: 1;
+    right: 1px;
+    top: 4px;
+    bottom: 0;
+    margin: auto;
+    padding: 2px;
+    font-size: 18px;
+    font-weight: bold;
+    content: "\00d7";
+    text-align: center;
+    cursor: pointer;
+    color: rgb(109, 109, 109);
+    background: transparent;
+    padding-bottom: 16px;
+    margin-top: -16px;
+    padding-right: 4px;
+    line-height: 1;
 }

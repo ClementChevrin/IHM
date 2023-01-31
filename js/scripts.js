@@ -4,7 +4,7 @@ window.onload = function () {
         minZoom: 1,
         maxZoom: 20
     }).addTo(map)
-    L.Routing.control({
+    var routage = L.Routing.control({
         router: new L.Routing.osrmv1({
             language: 'fr',
             profile: 'bike', // car, bike, foot
@@ -16,7 +16,70 @@ window.onload = function () {
             styles: [{ color: '#2485E0', opacity: 1, weight: 7 }]
         },
         geocoder: L.Control.Geocoder.nominatim()
-    }).addTo(map)
+    })
+    routage.addTo(map)
+
+    routage.on('routeselected', function (e) {
+
+        var array = []
+        trajet = e.route.coordinates
+
+        for (let index = 0; index < trajet.length; index++) {
+            fetch(`https://api.open-meteo.com/v1/elevation?latitude=${trajet[index].lat}&longitude=${trajet[index].lng}`)
+                .then(response => {
+                    response.json()
+                        .then(function (result) {
+                            array.push(result.elevation[0])
+                            var max = 1
+                            var label = []
+                            for (let i = 0; i < array.length; i++) {
+                                label.push(i)
+                                if (max < array[i]) {
+                                    max = array[i]
+                                }
+                            }
+                            // Ajoute la Chart ici
+                            detail = document.getElementsByClassName("leaflet-routing-container leaflet-bar leaflet-control")
+                            var canevas = document.createElement("canvas");
+                            canevas.setAttribute("id", "myChart");
+                            detail[0].append(canevas)
+                            var ctx = document.getElementById("myChart").getContext("2d");
+                            var myChart = new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: label,
+                                    datasets: [{
+                                        label: 'Altitude',
+                                        data: array,
+                                        backgroundColor: [
+                                            'rgba(156,217,145,0.8)',
+                                        ],
+                                        borderColor: [
+                                            'rgba(145,149,217,0.8)',
+                                        ],
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        yAxes: [{
+                                            ticks: {
+                                                beginAtZero: true,
+                                                max: max // set the maximum value here
+                                            }
+                                        }]
+                                    }
+                                }
+                            });
+                        });
+                })
+                .then(data => {
+                });
+
+        }
+
+    });
+    //#region Ajout d'élément complémentaire
     divField = document.getElementsByClassName("leaflet-routing-geocoder")
     divField[0].firstChild.setAttribute("placeholder", "Départ")
     divField[1].firstChild.setAttribute("placeholder", "Fin")
@@ -24,20 +87,11 @@ window.onload = function () {
     card = document.getElementsByClassName("leaflet-control-container")
     card[0].children[1].classList.add("card-info");
     card[0].children[0].classList.add("zoom");
+    cardI = document.getElementsByClassName("card-info")
+    var h = document.createElement("h1");
+    h.innerText = "Maps"
+    cardI[0].children[0].prepend(h)
+    //#endregion
+
 
 }
-$(document).ready(function () {
-    var start = [45.52, -122.67];
-    var end = [45.54, -122.66];
-});
-// Effectuer une requête sur l'API Elevation de MapQuest pour récupérer les informations sur les variations d'altitude pour l'itinéraire
-/*$.ajax({
-    url: 'http://open.mapquestapi.com/directions/v2/route?key=S8d7L47mdyAG5nHG09dUnSPJjreUVPeC&from=' + start[1] + ',' + start[0] + '&to=' + end[1] + ',' + end[0] + '&routeType=bicycle&fullShape=true',
-    method: 'GET',
-    success: function (data) {
-        // Tracer le tracé de l'itinéraire en utilisant les données de variation d'altitude
-        console.log(data);
-        var path = data.route.shape;
-        console.log(path);
-    }
-});*/
