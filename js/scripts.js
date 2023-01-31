@@ -24,59 +24,44 @@ window.onload = function () {
         var array = []
         trajet = e.route.coordinates
 
-        for (let index = 0; index < trajet.length; index++) {
-            fetch(`https://api.open-meteo.com/v1/elevation?latitude=${trajet[index].lat}&longitude=${trajet[index].lng}`)
-                .then(response => {
-                    response.json()
-                        .then(function (result) {
-                            array.push(result.elevation[0])
-                            var max = 1
-                            var label = []
-                            for (let i = 0; i < array.length; i++) {
-                                label.push(i)
-                                if (max < array[i]) {
-                                    max = array[i]
-                                }
-                            }
-                            // Ajoute la Chart ici
-                            detail = document.getElementsByClassName("leaflet-routing-container leaflet-bar leaflet-control")
-                            var canevas = document.createElement("canvas");
-                            canevas.setAttribute("id", "myChart");
-                            detail[0].append(canevas)
-                            var ctx = document.getElementById("myChart").getContext("2d");
-                            var myChart = new Chart(ctx, {
-                                type: 'line',
-                                data: {
-                                    labels: label,
-                                    datasets: [{
-                                        label: 'Altitude',
-                                        data: array,
-                                        backgroundColor: [
-                                            'rgba(156,217,145,0.8)',
-                                        ],
-                                        borderColor: [
-                                            'rgba(145,149,217,0.8)',
-                                        ],
-                                        borderWidth: 1
-                                    }]
-                                },
-                                options: {
-                                    scales: {
-                                        yAxes: [{
-                                            ticks: {
-                                                beginAtZero: true,
-                                                max: max // set the maximum value here
-                                            }
-                                        }]
-                                    }
-                                }
+        function getElevation(index) {
+            return new Promise((resolve, reject) => {
+                fetch(`https://api.open-meteo.com/v1/elevation?latitude=${trajet[index].lat}&longitude=${trajet[index].lng}`)
+                    .then(response => {
+                        response.json()
+                            .then(function (result) {
+                                resolve(result.elevation[0])
                             });
-                        });
-                })
-                .then(data => {
-                });
-
+                    })
+                    .catch(error => {
+                        reject(error)
+                    });
+            });
         }
+
+        async function fetchElevations() {
+            for (let index = 0; index < trajet.length; index++) {
+                try {
+                    const elevation = await getElevation(index);
+                    array.push(elevation)
+                } catch (error) {
+                    console.error(error)
+                }
+            }
+            var max = 1
+            var label = []
+            for (let i = 0; i < array.length; i++) {
+                label.push(i)
+                if (max < array[i]) {
+                    max = array[i]
+                }
+            }
+            createChart(max, array, label)
+        }
+
+        fetchElevations();
+
+
 
     });
     //#region Ajout d'élément complémentaire
@@ -94,4 +79,48 @@ window.onload = function () {
     //#endregion
 
 
+}
+
+function createChart(max, array, label) {
+    var max = 1
+    var label = []
+    for (let i = 0; i < array.length; i++) {
+        label.push(i)
+        if (max < array[i]) {
+            max = array[i]
+        }
+    }
+    // Ajoute la Chart ici
+    detail = document.getElementsByClassName("leaflet-routing-container leaflet-bar leaflet-control")
+    var canevas = document.createElement("canvas");
+    canevas.setAttribute("id", "myChart");
+    detail[0].append(canevas)
+    var ctx = document.getElementById("myChart").getContext("2d");
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: label,
+            datasets: [{
+                label: 'Altitude',
+                data: array,
+                backgroundColor: [
+                    'rgba(156,217,145,0.8)',
+                ],
+                borderColor: [
+                    'rgba(145,149,217,0.8)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        max: max // set the maximum value here
+                    }
+                }]
+            }
+        }
+    });
 }
