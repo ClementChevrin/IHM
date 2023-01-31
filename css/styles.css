@@ -1,3 +1,61 @@
-#carte{
-    height: 80vh;
+#carte {
+    height: 100vh;
+}
+
+* {
+    font-family: 'Nunito', sans-serif;
+}
+
+.leaflet-routing-add-waypoint {
+    display: none !important;
+}
+
+body {
+    margin: 0;
+}
+
+.leaflet-right .leaflet-control {
+    float: left !important;
+}
+
+.leaflet-left .leaflet-control {
+    float: right !important;
+}
+
+.leaflet-routing-geocoders .leaflet-routing-geocoder input {
+    width: -webkit-fill-available;
+    padding: 6px 11px;
+    border: solid 1px black;
+    border-radius: 8px;
+}
+
+div.leaflet-control-container div.card-info {
+    right: auto;
+    margin: 10px 0 0 10px;
+    height: -webkit-fill-available;
+    padding-bottom: 10px;
+}
+
+div.card-info div.leaflet-routing-container {
+    right: auto;
+    margin: 0;
+    height: -webkit-fill-available;
+    padding: 8px !important;
+}
+
+div.leaflet-control-container {
+    height: -webkit-fill-available;
+}
+
+div.leaflet-control-container div.zoom {
+    right: 0;
+    margin-right: 10px;
+    height: -webkit-fill-available;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+div.leaflet-control-container div.zoom .leaflet-control-zoom {
+    margin-bottom: 20px;
 }
